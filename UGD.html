@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UGD Vue Basic</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>GAME TEBAK ANGKA</h1>
+        <h2>Silakan Tebak Angka dari 1-10 ^_^</h2>
+        <div>
+            <input type="number" v-model="tebak" placeholder="Input Angka"/>
+            <h2>KESEMPATAN : {{kesempatanCoba}} </h2>
+            <button @click="cobaTebak" type="button" class="btn btn-primary">Tebak Angka</button> 
+        </div>
+
+        <div v-show="TebakBenar">
+            <br><p>BENAR TEBAKANMU</p>
+            <button class="btn-primary" @click="main">AYO MAIN LAGI</button>
+        </div>
+
+        <div v-show="TebakSalah">
+            <br><p>SALAH TEBAKANMU</p>
+            <button class="btn-primary" @click="gosokterus">AYO TEBAK TERUS</button>
+        </div>
+    </div>
+    
+</body>
+<script>
+    new Vue({
+        data: {
+            angkaAcak: Math.floor(Math.random() *10) +1,
+            tebak:null,
+            kesempatanCoba:3,
+            TebakSalah:undefined,
+            TebakBenar:undefined,
+            TebakKalah:undefined;
+            isDisabled:false,
+            footer: {
+                nama: 'Yosia Galih Yudhistira',
+                npm: '180709971',
+                kelas: 'A',
+            },
+        },
+        methods: {
+            gosokterus(){
+                this.isDisabled = false;
+                this.Tebaksalah = undefined;
+            },
+            main(){
+                location.reload();
+            },
+            cobaTebak(){
+                if(this.tebak== this.angkaAcak)
+                {
+                    this.isDisabled = true;
+                    this.benar = 1;
+                }
+                else
+                {
+                    this.TebakSalah =1;
+                    this.isDisabled = true;
+                    this.kesempatanCoba--;
+                    if(this.kesempatanCoba==0)
+                    {
+                        this.TebakKalah=1;
+                        this.TebakSalah=undefined;
+                    }
+                    console.log(this.angkaAcak);
+                }
+            }
+        },
+    });
+</script>
+</html>
