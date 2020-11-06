@@ -5,49 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UGD Vue Basic</title>
     <script src="vue.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
 </head>
 <body>
-    <div id="app">
-        <h1>GAME TEBAK ANGKA</h1>
-        <h2>Silakan Tebak Angka dari 1-10 ^_^</h2>
-        <div>
-            <input type="number" v-model="tebak" placeholder="Input Angka"/>
+    <div id="app" style="background-color: lightblue;">
+        <div class="fixed" style="background-color: lightblue; text-align: center;" >
+            <h1>GAME TEBAK ANGKA</h1>
+            <h2>Silakan Tebak Angka dari 1-10 ^_^</h2>
+        </div>
+        <div class="fixed" style="background-color: lightblue; text-align: center;">
+            <input type="number" v-model="tebak" :disabled="isDisabled" placeholder="Input Angka"/>
             <h2>KESEMPATAN : {{kesempatanCoba}} </h2>
-            <button @click="cobaTebak" type="button" class="btn btn-primary">Tebak Angka</button> 
+            <button @click="cobaTebak" type="button" class="btn btn-primary" :disabled="isDisabled">Tebak Angka</button> 
         </div>
 
-        <div v-show="TebakBenar">
+        <div class="fixed" v-show="TebakBenar" style="background-color: lightblue; text-align: center;">
             <br><p>BENAR TEBAKANMU</p>
             <button class="btn-primary" @click="main">AYO MAIN LAGI</button>
         </div>
 
-        <div v-show="TebakSalah">
+        <div class="fixed" v-show="TebakSalah" style="background-color: lightblue; text-align: center;">
             <br><p>SALAH TEBAKANMU</p>
-            <button class="btn-primary" @click="gosokterus">AYO TEBAK TERUS</button>
+            <button class="btn-warning" @click="cobalagi">AYO TEBAK TERUS</button>
+        </div>
+
+        <div class="fixed" v-show="TebakKalah" style="background-color: lightblue; text-align: center;">
+            <br><p>ANDA KALAH DALAM PERMAINAN, AYO COBA LAGI ^_^</p>
+            <button class="btn-danger" @click="main">COBA LAGI</button>
+        </div>
+
+        <div class="fixed-bottom" >
+            <footer style="position: fixed; left: 50; bottom: 0; width: 100%; text-align: center;">
+                <p>{{ `${footer.nama} | ${footer.npm} | ${footer.kelas}` }}</p>
+                <p>Bonus Game : {{angkaAcak}}</p>
+            </footer>
         </div>
     </div>
     
 </body>
 <script>
     new Vue({
+        el : "#app",
         data: {
-            angkaAcak: Math.floor(Math.random() *10) +1,
-            tebak:null,
-            kesempatanCoba:3,
-            TebakSalah:undefined,
-            TebakBenar:undefined,
-            TebakKalah:undefined;
-            isDisabled:false,
             footer: {
                 nama: 'Yosia Galih Yudhistira',
                 npm: '180709971',
                 kelas: 'A',
             },
+            angkaAcak: Math.floor(Math.random() * (10 - 1 + 1)) + 1,
+            tebak:null,
+            kesempatanCoba:3,
+            TebakSalah:false,
+            TebakBenar:false,
+            TebakKalah:false,
+            isDisabled:false,
+            
         },
         methods: {
-            gosokterus(){
+            cobalagi(){
                 this.isDisabled = false;
-                this.Tebaksalah = undefined;
+                this.Tebaksalah = false;
             },
             main(){
                 location.reload();
@@ -56,17 +73,17 @@
                 if(this.tebak== this.angkaAcak)
                 {
                     this.isDisabled = true;
-                    this.benar = 1;
+                    this.TebakBenar = true;
                 }
                 else
                 {
-                    this.TebakSalah =1;
+                    this.TebakSalah =true;
                     this.isDisabled = true;
                     this.kesempatanCoba--;
                     if(this.kesempatanCoba==0)
                     {
-                        this.TebakKalah=1;
-                        this.TebakSalah=undefined;
+                        this.TebakKalah=true;
+                        this.TebakSalah=false;
                     }
                     console.log(this.angkaAcak);
                 }
